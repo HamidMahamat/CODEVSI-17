@@ -1,3 +1,5 @@
+from locale import format
+
 import matplotlib.pyplot as plt
 import numpy as np
 import scipy
@@ -35,6 +37,8 @@ def dte(beta, k):
 def dtm(beta, k):
     return f(beta, k)[1]
 
+# def dth(beta, k):
+#     return f(beta, k)[2]
 
 # Zero research with secants method
 def zero(f, a, b, tol, Niter):
@@ -181,26 +185,29 @@ def zero_deepfinder(f, a, b, xtol, Niter):
 
 # --- second Test
 xtol = 0.0001
-Beta_toplot = []
+Beta_te = []
 Beta_tm = []
+#Beta_th=[]
 for k0 in DATA[:, 0]:
     Niter = int(20 * k0 * (np.sqrt(eps_t) - 1))
     z_te = zero_deepfinder(partial(dte, k=k0), k0 * (10001 / 10000), k0 * np.sqrt(eps_t) * (9999 / 10000), xtol, Niter)
     z_tm = zero_deepfinder(partial(dtm, k=k0), k0 * (10001 / 10000), k0 * np.sqrt(eps_t) * (9999 / 10000), xtol, Niter)
+    #z_th = zero_deepfinder(partial(dth, k=k0), k0 * (10001 / 10000), k0 * np.sqrt(eps_t) * (9999 / 10000), xtol, Niter)
     Beta_tm.append(z_tm)
-    Beta_toplot.append(z_te)
+    Beta_te.append(z_te)
+    #Beta_th.append(z_th)
 
 
 def X_dte(idx):
     x = []
-    if len(Beta_toplot[-1]) < idx + 1:
+    if len(Beta_te[-1]) < idx + 1:
         raise ValueError("this mode doesn't exist")
     else:
-        for i in range(len(Beta_toplot)):
-            if len(Beta_toplot[i]) <= idx:
+        for i in range(len(Beta_te)):
+            if len(Beta_te[i]) <= idx:
                 pass
             else:
-                x.append(Beta_toplot[i][-idx - 1])
+                x.append(Beta_te[i][-idx - 1])
     return x
 
 
@@ -226,16 +233,48 @@ def Y_dtm(idx):
     x = X_dtm(idx)
     return DATA[Nk - 1 - len(x):, 0]
 
+# def X_dth(idx):
+#     x = []
+#     if len(Beta_th[-1]) < idx + 1:
+#         raise ValueError("this mode doesn't exist")
+#     else:
+#         for i in range(len(Beta_tm)):
+#             if len(Beta_th[i]) <= idx:
+#                 pass
+#             else:
+#                 x.append(Beta_th[i][-idx - 1])
+#     return x
+#
+#
+# def Y_dth(idx):
+#     x = X_dth(idx)
+#     return DATA[Nk - 1 - len(x):, 0]
 
+#unit
+u=9
 plt.figure()
 plt.xlabel(r'$\beta$')
-plt.ylabel('$k$')
-plt.axline((0, 0), slope=1, c='red')
-plt.axline((0, 0), slope=1 / np.sqrt(eps_t), c='red')
 
-plt.plot(X_dte(0), Y_dte(0))
-plt.plot(X_dte(1), Y_dte(1))
 
-plt.plot(X_dtm(0), Y_dtm(0))
-plt.plot(X_dtm(1), Y_dtm(1))
+plt.ylabel('$f$ [GHz]')
+plt.xlim([0, k_max * (c0/(2*10**u*scipy.pi))])
+plt.xlim([0, k_max * np.sqrt(eps_t)])
+plt.axline((0, 0), slope=(c0/(2*10**u*scipy.pi)), c='red')
+plt.axline((0, 0), slope=(c0/(2*10**u*scipy.pi)) / np.sqrt(eps_t), c='red')
+
+plt.plot(X_dte(0), (c0/(2*10**u*scipy.pi))*Y_dte(0), label='TE0')
+plt.plot(X_dte(1), (c0/(2*10**u*scipy.pi))*Y_dte(1), label='TE1')
+
+plt.plot(X_dtm(0), (c0/(2*10**u*scipy.pi))*Y_dtm(0), label='TM0')
+plt.plot(X_dtm(1), (c0/(2*10**u*scipy.pi))*Y_dtm(1), label='TM1')
+
+
+plt.plot(X_dte(2), (c0/(2*10**u*scipy.pi))*Y_dte(2), label='TE2')
+plt.plot(X_dte(3), (c0/(2*10**u*scipy.pi))*Y_dte(3), label='TE3')
+
+plt.plot(X_dtm(2), (c0/(2*10**u*scipy.pi))*Y_dtm(2), label='TM2')
+plt.plot(X_dtm(3), (c0/(2*10**u*scipy.pi))*Y_dtm(3), label='TM3')
+
+plt.legend()
+plt.savefig("graph.pdf", format="pdf", bbox_inches="tight")
 plt.show()
