@@ -11,7 +11,7 @@ c0 = 3e8
 eps_t = 10
 eps_l = 10
 d = 0.016
-n = 0
+n = 1
 
 
 # Implicit function of the dispersion's equation
@@ -73,12 +73,12 @@ def isindomain(beta, k):
     return (beta > k) & (beta < np.sqrt(eps_t) * k)
 
 
-Nb = 800  # Number of columns
+Nb = 2  # Number of columns
 Nk = 300  # Number of rows
 
 # Maximum frequency in GHz
 ##f_max = 2
-k_min = 100  # 230 (2*z_min/(d*sqrt(eps_t-1)))*(1000001/1000000) where z_min is the second zero of J_n
+k_min = 10  # 230 (2*z_min/(d*sqrt(eps_t-1)))*(1000001/1000000) where z_min is the second zero of J_n
 k_max = 1000  # 500
 
 DATA = np.zeros((Nk, Nb))  # The first row will contain only zeros (if we put the matrix' shape [Nk,Nb]) that's why Nk-1
@@ -189,7 +189,8 @@ Beta_te = []
 Beta_tm = []
 #Beta_th=[]
 for k0 in DATA[:, 0]:
-    Niter = int(20 * k0 * (np.sqrt(eps_t) - 1))
+    #Niter = int(1/2 * k0 * (np.sqrt(eps_t) - 1))
+    Niter=100
     z_te = zero_deepfinder(partial(dte, k=k0), k0 * (10001 / 10000), k0 * np.sqrt(eps_t) * (9999 / 10000), xtol, Niter)
     z_tm = zero_deepfinder(partial(dtm, k=k0), k0 * (10001 / 10000), k0 * np.sqrt(eps_t) * (9999 / 10000), xtol, Niter)
     #z_th = zero_deepfinder(partial(dth, k=k0), k0 * (10001 / 10000), k0 * np.sqrt(eps_t) * (9999 / 10000), xtol, Niter)
@@ -257,21 +258,18 @@ plt.xlabel(r'$\beta$')
 
 
 plt.ylabel('$f$ [GHz]')
-plt.xlim([0, k_max * (c0/(2*10**u*scipy.pi))])
+plt.ylim([0, k_max * (c0/(2*10**u*scipy.pi))])
 plt.xlim([0, k_max * np.sqrt(eps_t)])
 plt.axline((0, 0), slope=(c0/(2*10**u*scipy.pi)), c='red')
 plt.axline((0, 0), slope=(c0/(2*10**u*scipy.pi)) / np.sqrt(eps_t), c='red')
 
 plt.plot(X_dte(0), (c0/(2*10**u*scipy.pi))*Y_dte(0), label='TE0')
 plt.plot(X_dte(1), (c0/(2*10**u*scipy.pi))*Y_dte(1), label='TE1')
-
-plt.plot(X_dtm(0), (c0/(2*10**u*scipy.pi))*Y_dtm(0), label='TM0')
-plt.plot(X_dtm(1), (c0/(2*10**u*scipy.pi))*Y_dtm(1), label='TM1')
-
-
 plt.plot(X_dte(2), (c0/(2*10**u*scipy.pi))*Y_dte(2), label='TE2')
 plt.plot(X_dte(3), (c0/(2*10**u*scipy.pi))*Y_dte(3), label='TE3')
 
+plt.plot(X_dtm(0), (c0/(2*10**u*scipy.pi))*Y_dtm(0), label='TM0')
+plt.plot(X_dtm(1), (c0/(2*10**u*scipy.pi))*Y_dtm(1), label='TM1')
 plt.plot(X_dtm(2), (c0/(2*10**u*scipy.pi))*Y_dtm(2), label='TM2')
 plt.plot(X_dtm(3), (c0/(2*10**u*scipy.pi))*Y_dtm(3), label='TM3')
 
