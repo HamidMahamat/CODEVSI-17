@@ -64,7 +64,7 @@ xtol = 0.0001
 Beta_te = []
 Beta_tm = []
 #Beta_th=[]
-for k0 in k:    
+for k0 in k:
     #Niter = int(1/2 * k0 * (np.sqrt(eps_t) - 1))
     Niter=100
     z_te = zero_deepfinder(partial(dte, k=k0), k0 * (10001 / 10000), k0 * np.sqrt(eps_t) * (9999 / 10000), xtol, Niter)
@@ -133,4 +133,5 @@ plt.plot(X_dtm(2), (c0/(2*10**u*scipy.pi))*Y_dtm(2), label='TM2')
 plt.plot(X_dtm(3), (c0/(2*10**u*scipy.pi))*Y_dtm(3), label='TM3')
 
 plt.legend()
+plt.savefig("graph.pdf", format="pdf", bbox_inches="tight")
 plt.show()
