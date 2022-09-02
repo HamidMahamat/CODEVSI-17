@@ -133,4 +133,5 @@ plt.plot(X_dtm(2), (c0/(2*10**u*scipy.pi))*Y_dtm(2), label='TM2')
 plt.plot(X_dtm(3), (c0/(2*10**u*scipy.pi))*Y_dtm(3), label='TM3')
 
 plt.legend()
+plt.savefig("graph.pdf", format="pdf", bbox_inches="tight")
 plt.show()
