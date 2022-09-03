@@ -10,7 +10,7 @@ def create_main_window():
     window.title("Dispersion Diagram Displayer")
 
     #window.geometry("1080x720")
-    #window.iconbitmap("logo.ico")
+    window.iconbitmap("logo.ico")
     window.config(background='#33A18B')
 
     label_title=tk.Label(window, text="Propagation modes displayer", font=("Helvetica", 20))
@@ -53,7 +53,7 @@ def create_button_frame(container):
     frame2.columnconfigure(0, weight=1)
     frame2.columnconfigure(1, weight=1)
     
-    ttk.Label(frame2, text="x_Axis:").grid(column=0, row=0)
+    ttk.Label(frame2, text="k_max:").grid(column=0, row=0)
     ttk.Entry(frame2).grid(column=1, row=0, sticky=tk.E)
     frame2.grid(column=1,row=0)
     
@@ -75,16 +75,16 @@ def create_param_frame(container):
     frame.columnconfigure(0, weight=1)
     frame.columnconfigure(1, weight=1)
 
-    ttk.Label(frame, text="param1:").grid(column=0, row=0)
+    ttk.Label(frame, text="transversal permittiviy "+u'\u03B5'+u'\u209C'+" :").grid(column=0, row=0)
     ttk.Entry(frame).grid(column=1, row=0, sticky=tk.E)
 
-    ttk.Label(frame, text="param2:").grid(column=0, row=1)
+    ttk.Label(frame, text="longitudinal permittiviy "+u'\u03B5'+u'\u2097'+" :").grid(column=0, row=1)
     ttk.Entry(frame).grid(column=1, row=1, sticky=tk.E)
 
-    ttk.Label(frame, text="param3:").grid(column=0, row=2)
+    ttk.Label(frame, text="diameter d :").grid(column=0, row=2)
     ttk.Entry(frame).grid(column=1, row=2, sticky=tk.E)
 
-    ttk.Label(frame, text="param4:").grid(column=0, row=3)
+    ttk.Label(frame, text="azimuthal index n :").grid(column=0, row=3)
     ttk.Entry(frame).grid(column=1, row=3, sticky=tk.E)
 
 
