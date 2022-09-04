@@ -3,19 +3,13 @@ from tkinter import ttk
 from PIL import ImageTk, Image
 
 view = ""
-panel =None
-window = None
 
 views= [ "dancing-spider.jpg","dancing-spider-sobel_avec_seuil_270.png","Pitch-Roll-and-Yaw.jpg","im1.jpg","im2.png"]
 
 index = 0
-view=".essai/"+views[index%len(views)]
+view=+views[index%len(views)]
 
-#transversal_permittiviy = None
-longitudinal_permittiviy= None
-diameter= None
-azimuthal_index= None
-#k_max_var = tk.StringVar()
+
 
 def create_main_window():
     global view,panel,window,transversal_permittiviy,longitudinal_permittiviy,diameter,azimuthal_index,k_max_var
@@ -100,7 +94,6 @@ def image_render():
     global view,index,panel,window,transversal_permittiviy,longitudinal_permittiviy,diameter,azimuthal_index,k_max_var
     v1,v2,v3,v4,v5 = None,None,None,None,None
     index =-1
-    #print("k_max = {}".format(k_max_var.get()))
     try : #on s'assure de récuperer les bonnes valeurs
         #print(v1,v2,v3,v4,v5)
         v1= float(transversal_permittiviy.get())
@@ -118,7 +111,7 @@ def image_render():
     if index ==-1 :
         return
     
-    view = ".essai/"+views[index%len(views)]
+    view = views[index%len(views)]
     result = tk.Toplevel(window) 
     img = ImageTk.PhotoImage(file= view)
     graph = tk.Label(result, image = img)
