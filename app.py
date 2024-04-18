@@ -1,7 +1,9 @@
 import tkinter as tk
 from tkinter import ttk
+from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, NavigationToolbar2Tk)
 from PIL import ImageTk, Image
 from plotter import main
+import numpy as np
 
 view = ""
 
@@ -21,6 +23,7 @@ def create_main_window():
 
     #window.geometry("1080x720")
     window.iconbitmap("logo.ico")
+    #window.iconphoto(True,tk.PhotoImage(Image.open('App_logo.jpg')))
     window.config(background='#33A18B')
 
     label_title = tk.Label(window, text="Propagation modes displayer", font=("Helvetica", 30))
@@ -115,22 +118,23 @@ def image_render():
     if index == -1:
         return
     main(v1,v2,v3,v4,v5,index,list_te_tm)
-    view = ".images/graph"+str(index)+".png" #views[index % len(views)]
-    result = tk.Toplevel(window)
-    img = ImageTk.PhotoImage(file=view)
-    graph = tk.Label(result, image=img)
-    menubar = tk.Menu(result)
-    file = tk.Menu(menubar, tearoff=0)
-    file.add_command(label="Save")
+    #view = ".images/graph"+str(index)+".png" #views[index % len(views)]
+    #result = tk.Toplevel(window)
 
-    file.add_separator()
+    #img = ImageTk.PhotoImage(file=view)
+    #graph = tk.Label(result, image=img)
+    #menubar = tk.Menu(result)
+    #file = tk.Menu(menubar, tearoff=0)
+    #file.add_command(label="Save")
 
-    file.add_command(label="Exit", command=result.quit)
-    menubar.add_cascade(label="Fichier", menu=file)
+    #file.add_separator()
 
-    graph.pack()
-    result.config(menu=menubar)
-    result.mainloop()
+    #file.add_command(label="Exit", command=result.quit)
+    #menubar.add_cascade(label="Fichier", menu=file)
+
+    #graph.pack()
+    #result.config(menu=menubar)
+    #result.mainloop()
 
 
 if __name__ == "__main__":
